@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Xml;
 
@@ -25,7 +26,7 @@ namespace Alexa.Web.Controllers
                         redirectionUrl = originalItem.Links[0].Uri.ToString(),
                         titleText = originalItem.Title.Text,
                         mainText = originalItem.Title.Text,
-                        updatedDate = originalItem.PublishDate.DateTime.ToString("yyyy-MM-dd'T'HH:mm:ss'.0Z'"),
+                        updateDate = originalItem.PublishDate.DateTime.ToString("yyyy-MM-ddTHH:mm:ss.0Z"),
                         uid = Guid.NewGuid().ToString()
                     };
 
@@ -33,7 +34,7 @@ namespace Alexa.Web.Controllers
                 }
             }
 
-            return Json(feed.Items);
+            return Json(feed.Items.OrderByDescending(y => y.updateDate));
         }
     }
 
@@ -50,7 +51,7 @@ namespace Alexa.Web.Controllers
     public class AlexaFeedItem
     {
         public string uid { get; set; }
-        public string updatedDate { get; set; }
+        public string updateDate { get; set; }
         public string titleText { get; set; }
         public string mainText { get; set; }
         public string redirectionUrl { get; set; }
