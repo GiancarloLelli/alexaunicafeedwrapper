@@ -21,11 +21,12 @@ namespace Alexa.Web.Controllers
 
                 foreach (var originalItem in reader.Items)
                 {
+                    var strippedText = AlexaFeed.Strip(originalItem.Title.Text);
                     var copy = new AlexaFeedItem
                     {
                         redirectionUrl = originalItem.Links[0].Uri.ToString(),
-                        titleText = originalItem.Title.Text,
-                        mainText = originalItem.Title.Text,
+                        titleText = strippedText,
+                        mainText = strippedText,
                         updateDate = originalItem.PublishDate.DateTime.ToString("yyyy-MM-ddTHH:mm:ss.0Z"),
                         uid = Guid.NewGuid().ToString()
                     };
@@ -43,6 +44,23 @@ namespace Alexa.Web.Controllers
         public AlexaFeed()
         {
             Items = new List<AlexaFeedItem>();
+        }
+
+        public static string Strip(string text)
+        {
+            var ouputString = text;
+
+            ouputString = ouputString.Replace('(', ' ');
+            ouputString = ouputString.Replace(')', ' ');
+            ouputString = ouputString.Replace('/', ' ');
+            ouputString = ouputString.Replace('\\', ' ');
+            ouputString = ouputString.Replace('@', ' ');
+            ouputString = ouputString.Replace('.', ' ');
+            ouputString = ouputString.Replace(',', ' ');
+            ouputString = ouputString.Replace('[', ' ');
+            ouputString = ouputString.Replace(']', ' ');
+
+            return ouputString;
         }
 
         public IList<AlexaFeedItem> Items { get; set; }
