@@ -25,8 +25,8 @@ namespace Alexa.Web.Controllers
                     var copy = new AlexaFeedItem
                     {
                         redirectionUrl = originalItem.Links[0].Uri.ToString(),
-                        titleText = strippedText,
-                        mainText = strippedText,
+                        titleText = strippedText.ToLower(),
+                        mainText = strippedText.ToLower(),
                         updateDate = originalItem.PublishDate.DateTime.ToString("yyyy-MM-ddTHH:mm:ss.0Z"),
                         uid = Guid.NewGuid().ToString()
                     };
